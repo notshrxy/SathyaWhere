@@ -396,7 +396,7 @@ CREATE POLICY "Students can view own claims"
 ---
 
 ## STEP 7: Create Supabase Storage Buckets
-
+  
 Go to **Storage** in Supabase Dashboard:
 
 ### Bucket 1: `id-cards`
@@ -427,43 +427,220 @@ Go to **Storage** in Supabase Dashboard:
 
 ## STEP 8: Create Storage Policies
 
-After creating buckets, set up access policies:
+After creating buckets, set up access policies using the Supabase UI:
 
-Go to **Storage** → Click on each bucket → **Policies** → **New Policy**
+**Navigation:** Go to **Storage** → Click on each bucket → **Policies** tab → **New Policy**
+
+---
+
+### 📋 Policy 1: `id-cards` Bucket - Upload Access
+
+**Policy Name:**
+```
+id-upload-access
+```
+
+**Allowed Operation:**
+- ✅ **INSERT** (checked)
+- ❌ SELECT (unchecked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Select: **authenticated** (or leave as "Defaults to all (public) roles" if you want public access)
+
+**Policy Definition:**
+```sql
+bucket_id = 'id-cards'
+```
+
+**What this does:** Allows authenticated users to upload ID card images to the `id-cards` bucket.
+
+---
+
+### 📋 Policy 2: `id-cards` Bucket - View Access (Public)
+
+**Policy Name:**
+```
+id-view-public
+```
+
+**Allowed Operation:**
+- ❌ INSERT (unchecked)
+- ✅ **SELECT** (checked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Leave as **"Defaults to all (public) roles"** (for public read access)
+
+**Policy Definition:**
+```sql
+bucket_id = 'id-cards'
+```
+
+**What this does:** Allows anyone (public) to view/download ID card images. This is needed for the verification process.
+
+---
+
+### 📋 Policy 3: `item-images` Bucket - Public View Access
+
+**Policy Name:**
+```
+item-images-public-view
+```
+
+**Allowed Operation:**
+- ❌ INSERT (unchecked)
+- ✅ **SELECT** (checked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Leave as **"Defaults to all (public) roles"**
+
+**Policy Definition:**
+```sql
+bucket_id = 'item-images'
+```
+
+**What this does:** Allows anyone to view item images (needed for displaying lost/found items publicly).
+
+---
+
+### 📋 Policy 4: `item-images` Bucket - Upload Access
+
+**Policy Name:**
+```
+item-images-upload
+```
+
+**Allowed Operation:**
+- ✅ **INSERT** (checked)
+- ❌ SELECT (unchecked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Select: **authenticated**
+
+**Policy Definition:**
+```sql
+bucket_id = 'item-images'
+```
+
+**What this does:** Allows authenticated users to upload item images when reporting lost/found items.
+
+---
+
+### 📋 Policy 5: `bills-invoices` Bucket - Upload Access
+
+**Policy Name:**
+```
+bills-upload-access
+```
+
+**Allowed Operation:**
+- ✅ **INSERT** (checked)
+- ❌ SELECT (unchecked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Select: **authenticated**
+
+**Policy Definition:**
+```sql
+bucket_id = 'bills-invoices'
+```
+
+**What this does:** Allows authenticated users to upload bill/invoice images as proof of ownership.
+
+---
+
+### 📋 Policy 6: `bills-invoices` Bucket - View Own Files
+
+**Policy Name:**
+```
+bills-view-own
+```
+
+**Allowed Operation:**
+- ❌ INSERT (unchecked)
+- ✅ **SELECT** (checked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Select: **authenticated**
+
+**Policy Definition:**
+```sql
+bucket_id = 'bills-invoices' AND (storage.foldername(name))[1] = auth.uid()::text
+```
+
+**What this does:** Allows users to view only their own uploaded bills (files must be in a folder named with their user ID).
+
+---
+
+### 📋 Policy 7: `bills-invoices` Bucket - Admin View All
+
+**Policy Name:**
+```
+bills-admin-view-all
+```
+
+**Allowed Operation:**
+- ❌ INSERT (unchecked)
+- ✅ **SELECT** (checked)
+- ❌ UPDATE (unchecked)
+- ❌ DELETE (unchecked)
+
+**Target Roles:**
+- Select: **authenticated**
+
+**Policy Definition:**
+```sql
+bucket_id = 'bills-invoices' AND EXISTS (
+  SELECT 1 FROM students 
+  WHERE id::text = auth.uid()::text 
+  AND is_admin = true
+)
+```
+
+**What this does:** Allows admins to view all bills for verification purposes.
+
+---
+
+## 🔧 Alternative: Using SQL Editor (Faster Method)
+
+If you prefer using SQL instead of the UI, run these in the **SQL Editor**:
 
 ### For `id-cards` bucket:
 ```sql
--- Students can upload their own ID card
-CREATE POLICY "Students can upload own ID card"
+-- Allow authenticated users to upload ID cards
+CREATE POLICY "id-upload-access"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'id-cards' AND (storage.foldername(name))[1] = auth.uid()::text);
+WITH CHECK (bucket_id = 'id-cards');
 
--- Students can view their own ID card
-CREATE POLICY "Students can view own ID card"
+-- Allow public to view ID cards (for verification)
+CREATE POLICY "id-view-public"
 ON storage.objects FOR SELECT
-TO authenticated
-USING (bucket_id = 'id-cards' AND (storage.foldername(name))[1] = auth.uid()::text);
-
--- Admins can view all ID cards
-CREATE POLICY "Admins can view all ID cards"
-ON storage.objects FOR SELECT
-TO authenticated
-USING (bucket_id = 'id-cards' AND EXISTS (
-  SELECT 1 FROM students WHERE id::text = auth.uid()::text AND is_admin = true
-));
+TO public
+USING (bucket_id = 'id-cards');
 ```
 
 ### For `item-images` bucket:
 ```sql
--- Anyone can view item images (public)
-CREATE POLICY "Public can view item images"
+-- Allow public to view item images
+CREATE POLICY "item-images-public-view"
 ON storage.objects FOR SELECT
 TO public
 USING (bucket_id = 'item-images');
 
--- Authenticated users can upload item images
-CREATE POLICY "Users can upload item images"
+-- Allow authenticated users to upload item images
+CREATE POLICY "item-images-upload"
 ON storage.objects FOR INSERT
 TO authenticated
 WITH CHECK (bucket_id = 'item-images');
@@ -471,26 +648,63 @@ WITH CHECK (bucket_id = 'item-images');
 
 ### For `bills-invoices` bucket:
 ```sql
--- Users can upload their own bills
-CREATE POLICY "Users can upload own bills"
+-- Allow authenticated users to upload bills
+CREATE POLICY "bills-upload-access"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'bills-invoices' AND (storage.foldername(name))[1] = auth.uid()::text);
+WITH CHECK (bucket_id = 'bills-invoices');
 
--- Users can view their own bills
-CREATE POLICY "Users can view own bills"
+-- Allow users to view their own bills
+CREATE POLICY "bills-view-own"
 ON storage.objects FOR SELECT
 TO authenticated
-USING (bucket_id = 'bills-invoices' AND (storage.foldername(name))[1] = auth.uid()::text);
+USING (
+  bucket_id = 'bills-invoices' 
+  AND (storage.foldername(name))[1] = auth.uid()::text
+);
 
--- Admins can view all bills
-CREATE POLICY "Admins can view all bills"
+-- Allow admins to view all bills
+CREATE POLICY "bills-admin-view-all"
 ON storage.objects FOR SELECT
 TO authenticated
-USING (bucket_id = 'bills-invoices' AND EXISTS (
-  SELECT 1 FROM students WHERE id::text = auth.uid()::text AND is_admin = true
-));
+USING (
+  bucket_id = 'bills-invoices' 
+  AND EXISTS (
+    SELECT 1 FROM students 
+    WHERE id::text = auth.uid()::text 
+    AND is_admin = true
+  )
+);
 ```
+
+---
+
+## 📝 Policy Field Reference
+
+When creating policies in the UI, here's what each field means:
+
+- **Policy name:** Descriptive name (e.g., `id-upload-access`)
+- **Allowed operation:** 
+  - **SELECT** = Read/View files (enables `getPublicUrl`, `download`)
+  - **INSERT** = Upload files (enables `upload`)
+  - **UPDATE** = Modify files (enables `update`, `move`, `copy`)
+  - **DELETE** = Remove files (enables `remove`)
+- **Target roles:** Who the policy applies to (`authenticated`, `public`, or specific roles)
+- **Policy definition:** SQL condition that returns boolean (e.g., `bucket_id = 'id-cards'`)
+
+---
+
+## ✅ Policy Checklist
+
+After setting up, verify:
+
+- [ ] `id-cards` bucket has INSERT policy for authenticated users
+- [ ] `id-cards` bucket has SELECT policy for public
+- [ ] `item-images` bucket has SELECT policy for public
+- [ ] `item-images` bucket has INSERT policy for authenticated users
+- [ ] `bills-invoices` bucket has INSERT policy for authenticated users
+- [ ] `bills-invoices` bucket has SELECT policy for authenticated users (own files)
+- [ ] `bills-invoices` bucket has SELECT policy for admins (all files)
 
 ---
 
