@@ -399,11 +399,12 @@ CREATE POLICY "Students can view own claims"
   
 Go to **Storage** in Supabase Dashboard:
 
-### Bucket 1: `id-cards`
-- **Name**: `id-cards`
-- **Public**: `false` (private)
-- **File size limit**: 5 MB
+### Bucket 1: `user-verification` (for ID cards and selfies)
+- **Name**: `user-verification`
+- **Public**: `true` (needed for verification URLs)
+- **File size limit**: 10 MB
 - **Allowed MIME types**: `image/jpeg, image/png, image/jpg`
+- **Note**: This bucket will contain subfolders: `id-cards/` and `selfies/`
 
 ### Bucket 2: `item-images`
 - **Name**: `item-images`
@@ -433,11 +434,11 @@ After creating buckets, set up access policies using the Supabase UI:
 
 ---
 
-### 📋 Policy 1: `id-cards` Bucket - Upload Access
+### 📋 Policy 1: `user-verification` Bucket - Upload Access
 
 **Policy Name:**
 ```
-id-upload-access
+user-verification-upload
 ```
 
 **Allowed Operation:**
@@ -447,22 +448,22 @@ id-upload-access
 - ❌ DELETE (unchecked)
 
 **Target Roles:**
-- Select: **authenticated** (or leave as "Defaults to all (public) roles" if you want public access)
+- Select: **authenticated**
 
 **Policy Definition:**
 ```sql
-bucket_id = 'id-cards'
+bucket_id = 'user-verification'
 ```
 
-**What this does:** Allows authenticated users to upload ID card images to the `id-cards` bucket.
+**What this does:** Allows authenticated users to upload ID card and selfie images to the `user-verification` bucket (files will be stored in `id-cards/` and `selfies/` subfolders automatically).
 
 ---
 
-### 📋 Policy 2: `id-cards` Bucket - View Access (Public)
+### 📋 Policy 2: `user-verification` Bucket - View Access (Public)
 
 **Policy Name:**
 ```
-id-view-public
+user-verification-view-public
 ```
 
 **Allowed Operation:**
@@ -476,10 +477,10 @@ id-view-public
 
 **Policy Definition:**
 ```sql
-bucket_id = 'id-cards'
+bucket_id = 'user-verification'
 ```
 
-**What this does:** Allows anyone (public) to view/download ID card images. This is needed for the verification process.
+**What this does:** Allows anyone (public) to view/download ID card and selfie images. This is needed for the verification process and displaying verification status.
 
 ---
 
@@ -616,19 +617,19 @@ bucket_id = 'bills-invoices' AND EXISTS (
 
 If you prefer using SQL instead of the UI, run these in the **SQL Editor**:
 
-### For `id-cards` bucket:
+### For `user-verification` bucket:
 ```sql
--- Allow authenticated users to upload ID cards
-CREATE POLICY "id-upload-access"
+-- Allow authenticated users to upload ID cards and selfies
+CREATE POLICY "user-verification-upload"
 ON storage.objects FOR INSERT
 TO authenticated
-WITH CHECK (bucket_id = 'id-cards');
+WITH CHECK (bucket_id = 'user-verification');
 
--- Allow public to view ID cards (for verification)
-CREATE POLICY "id-view-public"
+-- Allow public to view verification files (for verification process)
+CREATE POLICY "user-verification-view-public"
 ON storage.objects FOR SELECT
 TO public
-USING (bucket_id = 'id-cards');
+USING (bucket_id = 'user-verification');
 ```
 
 ### For `item-images` bucket:
@@ -698,13 +699,14 @@ When creating policies in the UI, here's what each field means:
 
 After setting up, verify:
 
-- [ ] `id-cards` bucket has INSERT policy for authenticated users
-- [ ] `id-cards` bucket has SELECT policy for public
+- [ ] `user-verification` bucket has INSERT policy for authenticated users
+- [ ] `user-verification` bucket has SELECT policy for public
 - [ ] `item-images` bucket has SELECT policy for public
 - [ ] `item-images` bucket has INSERT policy for authenticated users
 - [ ] `bills-invoices` bucket has INSERT policy for authenticated users
 - [ ] `bills-invoices` bucket has SELECT policy for authenticated users (own files)
 - [ ] `bills-invoices` bucket has SELECT policy for admins (all files)
+- [ ] `qr-codes` bucket has appropriate policies (if needed)
 
 ---
 
