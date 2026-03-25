@@ -1,0 +1,13 @@
+/**
+ * ocr-worker-for-recog/test/tsconfig.json
+ * TypeScript configuration specifically for the worker tests,
+ * extending the root configuration and including test types.
+ */
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"types": ["@cloudflare/vitest-pool-workers"]
+	},
+	"include": ["./**/*.ts", "../worker-configuration.d.ts"],
+	"exclude": []
+}
