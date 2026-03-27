@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { SignUpPage, SignUpFormData } from './Components/Sign-In/sign-up';
+import { SignUpPage, SignUpFormData } from '../components/Components/Sign-In/sign-up';
 
 export default function SignUp() {
   const handleSignUp = async (data: SignUpFormData): Promise<{ success: boolean; error?: string }> => {

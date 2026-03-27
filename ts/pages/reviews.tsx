@@ -6,8 +6,8 @@
  */
 
 import React from 'react';
-import { TestimonialsSection } from './Components/LP Comps/reviews';
-import Waves from './Components/LP Comps/LPbg';
+import { TestimonialsSection } from '../components/Components/LP Comps/reviews';
+import Waves from '../components/Components/LP Comps/LPbg';
 import { useRouter } from 'next/router';
 import { ArrowLeft } from 'lucide-react';
 

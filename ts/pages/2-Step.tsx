@@ -5,11 +5,11 @@
  * the `/api/auth/verify-otp` endpoint to finalize registration.
  */
 
-import { DottedSurface } from "./Components/Sign-In/DottedSurface";
+import { DottedSurface } from "../components/Components/Sign-In/DottedSurface";
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { AlertMessageDialog } from './Components/LP Comps/AlertMessageDialog';
+import { AlertMessageDialog } from '../components/Components/LP Comps/AlertMessageDialog';
 
 export default function TwoStepVerification() {
   const router = useRouter();

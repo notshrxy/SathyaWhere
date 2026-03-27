@@ -6,9 +6,9 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import Waves from './Components/LP Comps/LPbg';
-import MagicBento from './Components/LP Comps/ReportBento';
-import GuestToast from './Components/LP Comps/GuestToast';
+import Waves from '../components/Components/LP Comps/LPbg';
+import MagicBento from '../components/Components/LP Comps/ReportBento';
+import GuestToast from '../components/Components/LP Comps/GuestToast';
 import { HelpCircle, X, Lightbulb, Tag, Eye, MapPin, Calendar, FileText, Upload } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 

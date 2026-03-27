@@ -6,15 +6,15 @@
  */
 
 import React, { useRef, useEffect, useState } from 'react';
-import { CTASection } from './Components/LP Comps/LostHeroSec';
-import Waves from './Components/LP Comps/LPbg';
-import TiltedCard from './Components/LP Comps/TitledCard';
-import GuestToast from './Components/LP Comps/GuestToast';
+import { CTASection } from '../components/Components/LP Comps/LostHeroSec';
+import Waves from '../components/Components/LP Comps/LPbg';
+import TiltedCard from '../components/Components/LP Comps/TitledCard';
+import GuestToast from '../components/Components/LP Comps/GuestToast';
 import { supabase, getStorageUrl } from '@/lib/supabase';
 import { AlertCircle, PackageCheck, HelpCircle, Lightbulb, Zap, Info, X, Check, Camera, Upload, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from './Components/LP Comps/AlertDialog';
-import { LostItemReportDialog } from './Components/LP Comps/LostItemReportDialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '../components/Components/LP Comps/AlertDialog';
+import { LostItemReportDialog } from '../components/Components/LP Comps/LostItemReportDialog';
 
 // Sample placeholder data removed in favor of live fetching
 

@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { supabase } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, Shield, User, Hash, AlertCircle, Loader2 } from 'lucide-react';
-import ConfirmationToast, { ToastType } from './Components/LP Comps/ConfirmationToast';
+import ConfirmationToast, { ToastType } from '../components/Components/LP Comps/ConfirmationToast';
 
 const VerifyLostReturnPage = () => {
     const router = useRouter();

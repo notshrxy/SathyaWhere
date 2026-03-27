@@ -8,11 +8,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Camera, Upload, Check, AlertCircle, RefreshCw } from 'lucide-react';
-import { DottedSurface } from "./Components/Sign-In/DottedSurface";
+import { DottedSurface } from "../components/Components/Sign-In/DottedSurface";
 import { cn } from '@/lib/utils';
-import { AlertMessageDialog } from './Components/LP Comps/AlertMessageDialog';
+import { supabase } from "@/lib/supabase";
+import { AlertMessageDialog } from '../components/Components/LP Comps/AlertMessageDialog';
 import { motion, AnimatePresence } from 'framer-motion';
-import ProjectToast from './Components/LP Comps/ProjectToast';
+import ProjectToast from '../components/Components/LP Comps/ProjectToast';
 
 // --- Card Wrapper (Defined outside to prevent re-mounting) ---
 const CardWrapper = ({ step, title, description, children, currentStep }: any) => {

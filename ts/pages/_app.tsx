@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Head from "next/head";
-import CustomCursor from "./Components/LP Comps/CustomCursor";
+import CustomCursor from "../components/Components/LP Comps/CustomCursor";
 
 const inter = Inter({
   subsets: ["latin"],

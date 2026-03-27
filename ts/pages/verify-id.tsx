@@ -8,7 +8,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Camera, Upload, Check, AlertCircle, RefreshCw } from 'lucide-react';
-import { AlertMessageDialog } from './Components/LP Comps/AlertMessageDialog';
+import { AlertMessageDialog } from '../components/Components/LP Comps/AlertMessageDialog';
 
 export default function VerifyID() {
     const router = useRouter();

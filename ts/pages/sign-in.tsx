@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { SignInPage } from './Components/Sign-In/sign-in';
+import { SignInPage } from '../components/Components/Sign-In/sign-in';
 import { supabase } from '@/lib/supabase';
 
 export default function SignIn() {

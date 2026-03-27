@@ -7,24 +7,24 @@
 
 import React, { CSSProperties, ReactNode, useMemo, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import Plasma from './Components/LP Comps/Plasma';
-import ASCII from './Components/LP Comps/ASCII';
+import Plasma from '../components/Components/LP Comps/Plasma';
+import ASCII from '../components/Components/LP Comps/ASCII';
 import { supabase, getStorageUrl } from '@/lib/supabase';
-import ClickSpark from './Components/LP Comps/ClickSpark';
+import ClickSpark from '../components/Components/LP Comps/ClickSpark';
 import { PackageCheck, Trash2, X, Check, Bell, MessageSquare, LogOut } from 'lucide-react';
-import Shuffle from './Components/LP Comps/Shuffle';
-import TextCursor from './Components/LP Comps/TextCursor';
-import TextType from './Components/LP Comps/TypeEffect';
-import GlareHover from './Components/LP Comps/GlareHover';
-import StarBorder from './Components/LP Comps/Star Border';
-import CurvedLoop from './Components/LP Comps/CurvedLoop';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './Components/LP Comps/AlertDialog';
-import ProfileCard from './Components/LP Comps/ProfileCard';
-import GuestToast from './Components/LP Comps/GuestToast';
-import { HoverPeek } from './Components/LP Comps/Profile-Preview';
-import { LostItemReportDialog } from './Components/LP Comps/LostItemReportDialog';
-import { LostItemPreviewDialog } from './Components/LP Comps/LostItemPreviewDialog';
-import ConfirmationToast, { ToastType } from './Components/LP Comps/ConfirmationToast';
+import Shuffle from '../components/Components/LP Comps/Shuffle';
+import TextCursor from '../components/Components/LP Comps/TextCursor';
+import TextType from '../components/Components/LP Comps/TypeEffect';
+import GlareHover from '../components/Components/LP Comps/GlareHover';
+import StarBorder from '../components/Components/LP Comps/Star Border';
+import CurvedLoop from '../components/Components/LP Comps/CurvedLoop';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../components/Components/LP Comps/AlertDialog';
+import ProfileCard from '../components/Components/LP Comps/ProfileCard';
+import GuestToast from '../components/Components/LP Comps/GuestToast';
+import { HoverPeek } from '../components/Components/LP Comps/Profile-Preview';
+import { LostItemReportDialog } from '../components/Components/LP Comps/LostItemReportDialog';
+import { LostItemPreviewDialog } from '../components/Components/LP Comps/LostItemPreviewDialog';
+import ConfirmationToast, { ToastType } from '../components/Components/LP Comps/ConfirmationToast';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type NavLink = 'SW' | 'About' | 'Find' | 'Report' | 'Reviews' | 'My Activity';
@@ -205,31 +205,31 @@ const LandingPage = () => {
             body: JSON.stringify({ accessToken: session.access_token })
           });
 
-            const data = await response.json();
+          const data = await response.json();
 
-            if (response.ok && data.user) {
-              console.log('Matching student found via sync API:', data.user.fullName);
-              
-              let userIndex = data.user.userIndex;
-              // Fallback for missing index
-              if (!userIndex && data.user.createdAt) {
-                const { count } = await supabase
-                  .from('students')
-                  .select('*', { count: 'exact', head: true })
-                  .lt('created_at', data.user.createdAt);
-                userIndex = (count || 0) + 1;
-              }
+          if (response.ok && data.user) {
+            console.log('Matching student found via sync API:', data.user.fullName);
 
-              const updatedUserWithToken = {
-                ...data.user,
-                userIndex: userIndex,
-                token: data.token || storedToken
-              };
-              setUser(updatedUserWithToken);
-              
-              if (data.token) localStorage.setItem('token', data.token);
-              localStorage.setItem('supabase_token', session.access_token);
-              localStorage.setItem('user', JSON.stringify({ ...data.user, userIndex }));
+            let userIndex = data.user.userIndex;
+            // Fallback for missing index
+            if (!userIndex && data.user.createdAt) {
+              const { count } = await supabase
+                .from('students')
+                .select('*', { count: 'exact', head: true })
+                .lt('created_at', data.user.createdAt);
+              userIndex = (count || 0) + 1;
+            }
+
+            const updatedUserWithToken = {
+              ...data.user,
+              userIndex: userIndex,
+              token: data.token || storedToken
+            };
+            setUser(updatedUserWithToken);
+
+            if (data.token) localStorage.setItem('token', data.token);
+            localStorage.setItem('supabase_token', session.access_token);
+            localStorage.setItem('user', JSON.stringify({ ...data.user, userIndex }));
 
             // Reset guide alert for the new login session
             setHasSeenGuide(false);
@@ -298,9 +298,9 @@ const LandingPage = () => {
         const response = await fetch('/api/auth/sync', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
+          body: JSON.stringify({
             accessToken: accessToken,
-            token: customToken 
+            token: customToken
           })
         });
 
@@ -308,7 +308,7 @@ const LandingPage = () => {
 
         if (response.ok && data.user) {
           let userIndex = data.user.userIndex;
-          
+
           // Fallback: If AI logic failed to deliver userIndex, calculate it locally
           if (!userIndex && data.user.createdAt) {
             const { count } = await supabase
@@ -329,7 +329,7 @@ const LandingPage = () => {
           setUser(updatedUser);
           localStorage.setItem('user', JSON.stringify({ ...data.user, userIndex }));
           if (data.token) localStorage.setItem('token', data.token);
-          
+
           console.log('Profile refreshed successfully. User index:', userIndex);
         }
       } catch (err) {

@@ -10,8 +10,8 @@ import { useRouter } from 'next/router';
 import { supabase } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, Shield, Package, User, Hash, AlertCircle, Loader2 } from 'lucide-react';
-import ConfirmationToast, { ToastType } from './Components/LP Comps/ConfirmationToast';
-import StarBorder from './Components/LP Comps/Star Border';
+import ConfirmationToast, { ToastType } from '../components/Components/LP Comps/ConfirmationToast';
+import StarBorder from '../components/Components/LP Comps/Star Border';
 
 const VerifyReturnPage = () => {
     const router = useRouter();
