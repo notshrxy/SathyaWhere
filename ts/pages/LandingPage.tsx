@@ -1176,19 +1176,6 @@ const LandingPage = () => {
                                         {/* Dropdown Menu */}
                                         {activeMenuId === (item.claimId || item.id) && (
                                           <div className="absolute right-0 bottom-full mb-3 w-40 bg-[#0a061a] border border-white/10 rounded-2xl p-1 shadow-2xl z-20 animate-in fade-in zoom-in-95 duration-200">
-                                            {item.activityType === 'Report' && item.status !== 'returned' && item.activeClaims?.length > 0 && (
-                                              <button
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  setCompletingClaim(item.activeClaims[0]); // For now just use first claim for simplicity
-                                                  setActiveMenuId(null);
-                                                }}
-                                                className="w-full text-left px-4 py-3 text-sm text-green-400 hover:bg-green-500/10 rounded-xl transition-all font-bold flex items-center justify-between group/comp"
-                                              >
-                                                <span>Confirm Handover</span>
-                                                <span className="opacity-0 group-hover/comp:opacity-100 transition-opacity">🤝</span>
-                                              </button>
-                                            )}
                                             <button
                                               onClick={(e) => startDeleteActivity(item.claimId || item.id, item.activityType, e)}
                                               className="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/10 rounded-xl transition-all font-bold flex items-center justify-between group/del"
