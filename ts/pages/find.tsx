@@ -73,7 +73,7 @@ const FindPage = () => {
     try {
       const { data, error } = await supabase
         .from('items')
-        .select('*')
+        .select('*, reporter:reported_by(full_name, registration_number)')
         .eq('status', 'published')
         .order('created_at', { ascending: false });
 
@@ -323,7 +323,7 @@ const FindPage = () => {
                     <TiltedCard
                       imageSrc={imageSrc}
                       altText={item.item_name}
-                      captionText={item.item_name}
+                      captionText={`${item.reporter?.full_name || 'Anonymous'}\n${item.reporter?.registration_number || ''}`}
                       containerHeight="280px"
                       containerWidth="280px"
                       imageHeight="280px"
