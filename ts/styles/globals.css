@@ -263,7 +263,8 @@ html {
   font-size: 14px;
   font-weight: 500;
   pointer-events: none;
-  white-space: nowrap;
+  white-space: pre-line;
+  text-align: center;
   z-index: 10;
 }
 
