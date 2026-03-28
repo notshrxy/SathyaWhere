@@ -75,6 +75,17 @@
 
 ---
 
+## Registration Flow
+```text
+User → SathyaWhere web app
+     → Click on Sign Up in the Landing Page
+     → Enter details into all the required fields (Reg.No, Name, Dept, etc)
+     → Verify identity (OTP Verification / Upload ID / Facial Match Verification)
+     → Account Successfully Created and Authenticated, Welcome to SathyaWhere!
+     → Access dashboard and platform features, start helping/getting help from the community
+```
+---
+
 ## How do I 'Find' something I lost?
 **If another user has already found this item of yours that you've lost, and made a report on it, you can find it under: <br/>
 Find -> Arsenal of Recoveries. If not present, kindly follow the below tutotial.**
@@ -90,8 +101,8 @@ https://github.com/user-attachments/assets/5903b554-7e0b-4396-a050-6bdc50fd1c1c
 **This procees sends an automated email to both the parties, thus ensuring that they stay well-informed about the request and exchange.**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="540"; />
-  <img src="https://github.com/user-attachments/assets/6512719b-f6b7-4404-8448-d4db206bbcba" width="49%"; height="500"; />
+  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="438"; />
+  <img src="https://github.com/user-attachments/assets/f830e1d7-7e76-4536-8a11-c7cf8aa2ee3e" width="49%"; height="500"; />
 </p>
 
 ---
