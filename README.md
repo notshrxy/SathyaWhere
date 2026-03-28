@@ -93,7 +93,7 @@ https://github.com/user-attachments/assets/5903b554-7e0b-4396-a050-6bdc50fd1c1c
 **This procees sends an automated email to both the parties, thus ensuring that they stay well-informed about the request and exchange.**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="450"; />
+  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="400"; />
   <img src="https://github.com/user-attachments/assets/f830e1d7-7e76-4536-8a11-c7cf8aa2ee3e" width="40%"; height="450"; />
 </p>
 
@@ -111,7 +111,7 @@ https://github.com/user-attachments/assets/abb08b1a-4504-48c0-93d2-e876e2bed5c1
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/aff31037-74eb-4233-a04d-477699fe19a2" width="49%"; height="450"; />
-  <img src="https://github.com/user-attachments/assets/6756b8e7-300a-4a56-a405-88894831746e" width="49%"; height="450"; />
+  <img src="https://github.com/user-attachments/assets/6756b8e7-300a-4a56-a405-88894831746e" width="49%"; height="430"; />
 </p>
 
 ---
