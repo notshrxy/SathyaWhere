@@ -84,14 +84,6 @@ User → SathyaWhere web app
      → Account Successfully Created and Authenticated, Welcome to SathyaWhere!
      → Access dashboard and platform features, start helping/getting help from the community
 ```
----
-
-## How do I 'Find' something I lost?
-**If another user has already found this item of yours that you've lost, and made a report on it, you can find it under: <br/>
-Find -> Arsenal of Recoveries. If not present, kindly follow the below tutotial.**
-
-
----
 
 ## How do 'Returns' work?
 **This section helps users understand what the 'Report' section is actually meant for. By Report, we mean, Reporting items that one finds across campus, items that could potentially belong to someone else, items that could have been lost by a fellow student. Thus, adding a report adds a new tile to the Find page, students can claim reported items from the Find section.**
@@ -101,8 +93,25 @@ https://github.com/user-attachments/assets/5903b554-7e0b-4396-a050-6bdc50fd1c1c
 **This procees sends an automated email to both the parties, thus ensuring that they stay well-informed about the request and exchange.**
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="438"; />
-  <img src="https://github.com/user-attachments/assets/f830e1d7-7e76-4536-8a11-c7cf8aa2ee3e" width="49%"; height="500"; />
+  <img src="https://github.com/user-attachments/assets/ed1536a0-c7df-4733-bab4-023cf045b414" width="49%"; height="450"; />
+  <img src="https://github.com/user-attachments/assets/f830e1d7-7e76-4536-8a11-c7cf8aa2ee3e" width="40%"; height="450"; />
+</p>
+
+**Ask the other party (The Reporter) to scan the QR and check if the details on the mail match the details of the person trying to claim the item. post which, hand the item over and complete the exchange. This automatically increments your account stats.**
+
+---
+
+## How do I 'Find' something I've lost?
+**If another user has already found this item of yours that you've lost, and made a report on it, you can find it under: <br/>
+Find -> Arsenal of Recoveries. If what you've lost has not been reported yet and your item is nowhere to be found in <br/>the Arsenal of Recoveries, kindly follow the tutorial given below.**
+
+https://github.com/user-attachments/assets/abb08b1a-4504-48c0-93d2-e876e2bed5c1
+
+**This procees sends an automated email to both the parties, thus ensuring that they stay well-informed about the request and exchange.**
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/aff31037-74eb-4233-a04d-477699fe19a2" width="49%"; height="450"; />
+  <img src="https://github.com/user-attachments/assets/6756b8e7-300a-4a56-a405-88894831746e" width="49%"; height="450"; />
 </p>
 
 ---
