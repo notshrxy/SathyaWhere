@@ -90,7 +90,18 @@ export function LostItemPreviewDialog({ isOpen, isSending = false, onClose, item
                     className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
                   />
                   <div>
-                    <h3 className="text-xl font-bold text-white">{item.students?.full_name}</h3>
+                    <h3 className="text-xl font-bold text-white flex items-center gap-2 flex-wrap">
+                      <span>
+                        {item.students?.full_name?.length > 12 
+                          ? item.students.full_name.split(' ')[0] 
+                          : item.students?.full_name}
+                      </span>
+                      {item.students?.registration_number && (
+                        <span className="text-sm font-medium text-white/40 font-mono bg-white/5 px-2 py-0.5 rounded-lg border border-white/5">
+                          {item.students.registration_number}
+                        </span>
+                      )}
+                    </h3>
                     <p className="text-sm text-neutral-400">
                       Lost an item • {new Date(item.created_at).toLocaleDateString([], { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </p>
