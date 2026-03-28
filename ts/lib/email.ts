@@ -374,8 +374,23 @@ export async function sendLostItemVerificationEmail(params: {
           </div>
 
           <div style="background-color: #fefce8; border-left: 4px solid #eab308; padding: 20px; margin-top: 25px; border-radius: 0 8px 8px 0;">
-            <p style="margin: 0 0 10px 0; font-weight: bold; color: #854d0e;">The Report You Made:</p>
-            <p style="margin: 4px 0; font-size: 14px; color: #451a03;">${params.itemDetails.missing_details}</p>
+            <p style="margin: 0 0 15px 0; font-weight: bold; color: #854d0e; font-size: 16px;">The Report You Made:</p>
+            
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">WHEN & WHERE</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.missing_details}</p>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">APPEARANCE</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.appearance}</p>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">UNIQUE IDENTIFIERS</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.unique_identifiers}</p>
+            </div>
+
             ${params.itemDetails.photo_url ? `
               <div style="margin-top: 15px; text-align: center;">
                 <img src="${getStorageUrl('item-images', params.itemDetails.photo_url)}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />
@@ -404,6 +419,8 @@ export async function sendFinderNotificationConfirmationEmail(params: {
   reporterName: string;
   itemDetails: {
     missing_details: string;
+    appearance: string;
+    unique_identifiers: string;
     photo_url?: string;
   };
 }): Promise<void> {
@@ -437,8 +454,23 @@ export async function sendFinderNotificationConfirmationEmail(params: {
           </div>
 
           <div style="background-color: #fefce8; border-left: 4px solid #eab308; padding: 20px; margin-top: 25px; border-radius: 0 8px 8px 0;">
-            <p style="margin: 0 0 10px 0; font-weight: bold; color: #854d0e;">The Item You Found:</p>
-            <p style="margin: 4px 0; font-size: 14px; color: #451a03;">${params.itemDetails.missing_details}</p>
+            <p style="margin: 0 0 15px 0; font-weight: bold; color: #854d0e; font-size: 16px;">The Item You Found:</p>
+            
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">WHEN & WHERE</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.missing_details}</p>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">APPEARANCE</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.appearance}</p>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <p style="margin: 0; font-size: 12px; color: #a16207; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px;">UNIQUE IDENTIFIERS</p>
+              <p style="margin: 4px 0 0 0; font-size: 14px; color: #451a03;">${params.itemDetails.unique_identifiers}</p>
+            </div>
+
             ${params.itemDetails.photo_url ? `
               <div style="margin-top: 15px; text-align: center;">
                 <img src="${getStorageUrl('item-images', params.itemDetails.photo_url)}" style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" />

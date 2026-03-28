@@ -130,6 +130,8 @@ export default async function handler(
             reporterName,
             itemDetails: {
                 missing_details: (item as any).missing_details,
+                appearance: (item as any).appearance,
+                unique_identifiers: (item as any).unique_identifiers,
                 photo_url: (item as any).photo_url
             }
         });
