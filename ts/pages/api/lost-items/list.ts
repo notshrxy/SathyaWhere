@@ -30,7 +30,8 @@ export default async function handler(
                 created_at,
                 students!inner(
                     full_name,
-                    avatar_url
+                    avatar_url,
+                    registration_number
                 )
             `)
             .eq('status', 'active')
