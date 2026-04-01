@@ -8,33 +8,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { supabaseAdmin } from '@/lib/supabase';
 import { verifyToken, hashPassword, generateToken } from '@/lib/auth';
+import { callFacePP } from '@/lib/facepp';
 import formidable from 'formidable';
 import fs from 'fs';
 
-// Helper to call Face++ API
-async function callFacePP(endpoint: string, params: Record<string, string>) {
-    const querystring = new URLSearchParams({
-        api_key: process.env.FACEPLUSPLUS_API_KEY!,
-        api_secret: process.env.FACEPLUSPLUS_API_SECRET!,
-        ...params
-    });
-
-    const response = await fetch(`https://api-us.faceplusplus.com/facepp/v3/${endpoint}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: querystring.toString(),
-    });
-
-    const data = await response.json();
-
-    if (data.error_message) {
-        throw new Error(`Face++ API Error: ${data.error_message}`);
-    }
-
-    return data;
-}
 
 export const config = {
     api: {
@@ -68,12 +45,16 @@ export default async function handler(
         // --- RATE LIMIT CHECK ---
         const { data: studentAttempt, error: attemptError } = await supabaseAdmin
             .from('students')
-            .select('daily_call_count, last_verification_attempt')
+            .select('daily_call_count, last_verification_attempt, id_face_token')
             .eq('registration_number', registrationNumber)
             .single();
 
         if (attemptError || !studentAttempt) {
             return res.status(404).json({ error: 'Verification record not found. Please restart the process.' });
+        }
+
+        if (!studentAttempt.id_face_token) {
+            return res.status(400).json({ error: 'ID card face data missing. Please re-upload your ID card.' });
         }
 
         const today = new Date().toISOString().split('T')[0];
@@ -144,20 +125,10 @@ export default async function handler(
 
         // 5. Biometric Verification
         try {
-            console.log('Detecting face on ID card...');
-            const idDetect = await callFacePP('detect', {
-                image_base64: idCardBuffer.toString('base64'),
-            });
-
-            const idFaceToken = idDetect.faces?.[0]?.face_token;
-            if (!idFaceToken) {
-                return res.status(400).json({ error: 'No face detected in the institutional ID card photo. Please provide a clearer image.' });
-            }
-
-            // Comparison: ID face vs New Selfie
-            console.log('Comparing selfie with ID face...');
+            // Comparison: Stored ID face token vs New Selfie
+            console.log('Comparing selfie with cached ID face token...');
             const comparison = await callFacePP('compare', {
-                face_token1: idFaceToken,
+                face_token1: studentAttempt.id_face_token,
                 image_base64_2: selfieBuffer.toString('base64'),
             });
 
