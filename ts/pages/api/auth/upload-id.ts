@@ -198,11 +198,10 @@ export default async function handler(
             }
         } catch (faceErr: any) {
             console.error('Face++ Detect Error:', faceErr);
-            // If it's a CONCURRENCY error, we might want to retry implicitly, 
-            // but for now we'll just report it politely if it persists.
+            // Catch concurrency specifically to be polite
             if (faceErr.message?.includes('CONCURRENCY')) {
                 return res.status(503).json({ 
-                    error: 'Our verification server is currently busy. Please wait a few seconds and try clicking "Continue" again.' 
+                    error: 'Our verification system is currently busy processing another student\'s request. To ensure accuracy and security, we handle these one at a time. Please wait about 3 seconds and click "Continue" again.' 
                 });
             }
             throw faceErr;
