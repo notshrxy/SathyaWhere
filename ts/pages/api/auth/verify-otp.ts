@@ -103,7 +103,7 @@ export default async function handler(
         year: year ? parseInt(year.toString()) : null,
         gender: gender || 'Not Specified',
         avatar_url: avatarUrl,
-        first_login: false,
+        first_login: true,
         is_verified: false, // Will be set to true after face verification
         daily_call_count: 0,
         last_verification_attempt: new Date().toISOString().split('T')[0]
