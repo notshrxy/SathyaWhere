@@ -212,13 +212,15 @@ export default async function handler(
 
         // If it's a specific Face++ or logical error we threw, use that message
         const isKnownError = error.message?.includes('Face++') || error.message?.includes('Identity') || error.message?.includes('verification') || error.message?.includes('detected') || error.message?.includes('unsuccessful');
-        const professionalMsg = isKnownError
-            ? error.message
-            : 'Verification encountered an unexpected issue. Please try again or contact support if the problem persists.';
+        const isConcurrencyError = error.message?.includes('CONCURRENCY');
 
-        // Use 400 for known biometric/validation issues, 500 for server crashes
-        res.status(isKnownError ? 400 : 500).json({
-            error: error.message || professionalMsg,
+        const professionalMsg = isConcurrencyError
+            ? 'Our verification system is currently busy processing another student\'s request. To ensure accuracy and security, we handle these one at a time. Please wait about 5-10  seconds and click "Submit" again.'
+            : (isKnownError ? error.message : 'Verification encountered an unexpected issue. Please try again or contact support if the problem persists.');
+
+        // Use 503 for concurrency (Service Unavailable/Busy), 400 for known biometric/validation issues, 500 for server crashes
+        res.status(isConcurrencyError ? 503 : (isKnownError ? 400 : 500)).json({
+            error: professionalMsg,
             details: error.message,
             stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
