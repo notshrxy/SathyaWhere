@@ -8,6 +8,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { uploadFile, supabaseAdmin } from '@/lib/supabase';
 import { verifyToken } from '@/lib/auth';
+import { callFacePP } from '@/lib/facepp';
 import formidable from 'formidable';
 import fs from 'fs';
 import jsQR from 'jsqr';
@@ -179,8 +180,52 @@ export default async function handler(
             });
         }
 
-        // --- DEFERRED: No DB update here anymore ---
-        // Verification results will be saved in verify-face
+        // --- FACE DETECTION ---
+        // Optimization: Detect face on ID card NOW and store the face_token.
+        // This makes the final biometric verification step much faster and prevents concurrency errors.
+        console.log('Detecting face on ID card via Face++...');
+        let idFaceToken: string | null = null;
+        try {
+            const idDetect = await callFacePP('detect', {
+                image_base64: fileBuffer.toString('base64'),
+            });
+            idFaceToken = idDetect.faces?.[0]?.face_token || null;
+            
+            if (!idFaceToken) {
+                return res.status(400).json({ 
+                    error: 'We couldn’t detect a clear face on your institutional ID card. Please ensure your face is fully visible in the photo.' 
+                });
+            }
+        } catch (faceErr: any) {
+            console.error('Face++ Detect Error:', faceErr);
+            // If it's a CONCURRENCY error, we might want to retry implicitly, 
+            // but for now we'll just report it politely if it persists.
+            if (faceErr.message?.includes('CONCURRENCY')) {
+                return res.status(503).json({ 
+                    error: 'Our verification server is currently busy. Please wait a few seconds and try clicking "Continue" again.' 
+                });
+            }
+            throw faceErr;
+        }
+
+        // 5. Update Student Record with the ID's face token
+        // Use registrationNumber/decoded storage id to find student
+        console.log('Updating student record with ID face token...', storageId);
+        const { error: updateError } = await supabaseAdmin
+            .from('students')
+            .update({
+                id_card_image_path: fileName,
+                id_face_token: idFaceToken
+            })
+            .eq('registration_number', storageId);
+
+        if (updateError) {
+            console.error('Database Update Error:', updateError);
+            return res.status(500).json({ 
+                error: 'Failed to link ID card to your account profile.',
+                details: updateError.message 
+            });
+        }
 
         // 6. Return Success
         res.status(200).json({
